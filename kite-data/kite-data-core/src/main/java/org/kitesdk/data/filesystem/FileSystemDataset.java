@@ -277,6 +277,7 @@ class FileSystemDataset<E> extends AbstractDataset<E> {
       .toString();
   }
 
+  @SuppressWarnings("deprecation")
   @Deprecated
   void accumulateDatafilePaths(Path directory, List<Path> paths)
     throws IOException {
@@ -284,7 +285,7 @@ class FileSystemDataset<E> extends AbstractDataset<E> {
     for (FileStatus status : fileSystem.listStatus(directory,
       PathFilters.notHidden())) {
 
-      if (status.isDirectory()) {
+      if (status.isDir()) {
         accumulateDatafilePaths(status.getPath(), paths);
       } else {
         paths.add(status.getPath());

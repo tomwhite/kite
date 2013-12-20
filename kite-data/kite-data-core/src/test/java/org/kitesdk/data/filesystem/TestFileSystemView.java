@@ -140,6 +140,7 @@ public class TestFileSystemView extends TestRangeViews {
         view.deleteAll());
   }
 
+  @SuppressWarnings("deprecation")
   public static void assertDirectoriesExist(FileSystem fs, Path... dirs)
       throws IOException {
     for (Path path : dirs) {

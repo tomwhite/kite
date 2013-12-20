@@ -152,7 +152,7 @@ class FileSystemView<E> extends AbstractRangeView<E> {
         deleted = fs.delete(absolute, true /* include any files */ );
         // iterate up to the root, removing empty directories
         for (Path current = absolute.getParent();
-             !current.equals(root) && !current.isRoot();
+             !current.equals(root) && !(current.getParent() == null);
              current = current.getParent()) {
           final FileStatus[] stats = fs.listStatus(current);
           if (stats == null || stats.length == 0) {
