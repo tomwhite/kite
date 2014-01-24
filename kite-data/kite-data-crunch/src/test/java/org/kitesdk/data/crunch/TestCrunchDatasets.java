@@ -34,7 +34,9 @@ import org.apache.hadoop.conf.Configuration;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 import static org.kitesdk.data.filesystem.DatasetTestUtilities.USER_SCHEMA;
 import static org.kitesdk.data.filesystem.DatasetTestUtilities.checkTestUsers;
@@ -45,20 +47,25 @@ public class TestCrunchDatasets {
 
   private Configuration conf;
   private DatasetRepository repo;
+  private String repoUri;
 
   @Before
-  public void setUp() throws IOException {
+  public void setUp() throws Exception {
     this.conf = new Configuration();
+    File tmp = File.createTempFile("tmp", "");
+    tmp.delete();
+    tmp.deleteOnExit();
     this.repo = new FileSystemDatasetRepository.Builder().configuration(conf)
-        .metadataProvider(new MemoryMetadataProvider(conf)).build();
+        .rootDirectory(tmp.toURI()).build();
+    this.repoUri = "repo:" + tmp.toURI().toString(); // TODO: this should be set automatically by the repo
   }
 
   @Test
   public void testGeneric() throws IOException {
     Dataset<Record> inputDataset = repo.create("in", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).build());
+        .schema(USER_SCHEMA).property("repositoryUri", repoUri).build());
     Dataset<Record> outputDataset = repo.create("out", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).build());
+        .schema(USER_SCHEMA).property("repositoryUri", repoUri).build());
 
     // write two files, each of 5 records
     writeTestUsers(inputDataset, 5, 0);
@@ -76,9 +83,9 @@ public class TestCrunchDatasets {
   @Test
   public void testGenericParquet() throws IOException {
     Dataset<Record> inputDataset = repo.create("in", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).format(Formats.PARQUET).build());
+        .schema(USER_SCHEMA).format(Formats.PARQUET).property("repositoryUri", repoUri).build());
     Dataset<Record> outputDataset = repo.create("out", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).format(Formats.PARQUET).build());
+        .schema(USER_SCHEMA).format(Formats.PARQUET).property("repositoryUri", repoUri).build());
 
     // write two files, each of 5 records
     writeTestUsers(inputDataset, 5, 0);
@@ -100,9 +107,9 @@ public class TestCrunchDatasets {
         "username", 2).build();
 
     Dataset<Record> inputDataset = repo.create("in", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).build());
+        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).property("repositoryUri", repoUri).build());
     Dataset<Record> outputDataset = repo.create("out", new DatasetDescriptor.Builder()
-        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).build());
+        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).property("repositoryUri", repoUri).build());
 
     writeTestUsers(inputDataset, 10);
 
@@ -117,5 +124,30 @@ public class TestCrunchDatasets {
     pipeline.run();
 
     Assert.assertEquals(5, datasetSize(outputPart0));
+  }
+
+  @Test
+  @SuppressWarnings("deprecation")
+  public void testPartitionedSourceAndTargetWritingToTopLevel() throws IOException {
+    PartitionStrategy partitionStrategy = new PartitionStrategy.Builder().hash(
+        "username", 2).build();
+
+    Dataset<Record> inputDataset = repo.create("in", new DatasetDescriptor.Builder()
+        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).property("repositoryUri", repoUri).build());
+    Dataset<Record> outputDataset = repo.create("out", new DatasetDescriptor.Builder()
+        .schema(USER_SCHEMA).partitionStrategy(partitionStrategy).property("repositoryUri", repoUri).build());
+
+    writeTestUsers(inputDataset, 10);
+
+    PartitionKey key = partitionStrategy.partitionKey(0);
+    Dataset<Record> inputPart0 = inputDataset.getPartition(key, false);
+
+    Pipeline pipeline = new MRPipeline(TestCrunchDatasets.class);
+    PCollection<GenericData.Record> data = pipeline.read(
+        CrunchDatasets.asSource(inputPart0, GenericData.Record.class));
+    pipeline.write(data, CrunchDatasets.asTarget(outputDataset), Target.WriteMode.APPEND);
+    pipeline.run();
+
+    Assert.assertEquals(5, datasetSize(outputDataset));
   }
 }
