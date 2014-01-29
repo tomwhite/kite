@@ -708,6 +708,12 @@
         <version>${vers.avro}</version>
       </dependency>
       <dependency>
+        <groupId>org.apache.avro</groupId>
+        <artifactId>avro-mapred</artifactId>
+        <classifier>hadoop2</classifier>
+        <version>${vers.avro}</version>
+      </dependency>
+      <dependency>
         <groupId>org.apache.hadoop</groupId>
         <artifactId>hadoop-client</artifactId>
         <version>${vers.hadoop-mr1}</version>
