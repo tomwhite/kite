@@ -73,6 +73,7 @@ public interface View<E> {
    *
    * @param entity an entity {@code Object}
    * @return true if {@code entity} is in the partition space of this view.
+   * @since 0.11.0
    */
   boolean includes(E entity);
 

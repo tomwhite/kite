@@ -24,12 +24,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.kitesdk.data.FieldPartitioner;
 import org.kitesdk.data.PartitionStrategy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class TestKeyRangeIterable {
-  private static final Logger LOG = LoggerFactory.getLogger(TestKeyRangeIterable.class);
-
   public static final PartitionStrategy id = new PartitionStrategy.Builder()
       .identity("component", String.class, 50)
       .build();

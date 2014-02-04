@@ -159,8 +159,6 @@ public abstract class FieldPartitioner<S, T> implements Function<S, T>, Comparat
    * If the function cannot be projected exactly, the resulting predicate must
    * be more permissive than the original predicate.
    *
-   * @param predicate
-   * @return
    * @since 0.11.0
    */
   public abstract Predicate<T> project(Predicate<S> predicate);

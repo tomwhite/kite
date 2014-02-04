@@ -36,8 +36,6 @@ import org.apache.avro.generic.GenericRecord;
 import org.kitesdk.data.FieldPartitioner;
 import org.kitesdk.data.PartitionStrategy;
 import org.kitesdk.data.partition.CalendarFieldPartitioner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A set of simultaneous constraints.
@@ -46,8 +44,6 @@ import org.slf4j.LoggerFactory;
  */
 @Immutable
 public class Constraints {
-
-  private static final Logger LOG = LoggerFactory.getLogger(Constraints.class);
 
   private final Map<String, Predicate> constraints;
 

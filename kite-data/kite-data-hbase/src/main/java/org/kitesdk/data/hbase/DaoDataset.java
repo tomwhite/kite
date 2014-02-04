@@ -25,13 +25,7 @@ import org.kitesdk.data.RefineableView;
 import org.kitesdk.data.hbase.impl.Dao;
 import org.kitesdk.data.spi.AbstractDataset;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 class DaoDataset<E> extends AbstractDataset<E> implements RandomAccessDataset<E> {
-
-  private static final Logger logger = LoggerFactory
-      .getLogger(DaoDataset.class);
 
   private String name;
   private Dao<E> dao;

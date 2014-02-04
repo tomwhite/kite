@@ -39,24 +39,6 @@ public class MarkerComparator implements Comparator<Marker> {
     this.strategy = strategy;
   }
 
-  public static Comparator<Marker> leftMarkerComparator(final MarkerComparator markerComparator) {
-    return new Comparator<Marker>() {
-      @Override
-      public int compare(Marker m1, Marker m2) {
-        return markerComparator.leftCompare(m1, m2);
-      }
-    };
-  }
-
-  public static Comparator<Marker> rightMarkerComparator(final MarkerComparator markerComparator) {
-    return new Comparator<Marker>() {
-      @Override
-      public int compare(Marker m1, Marker m2) {
-        return markerComparator.rightCompare(m1, m2);
-      }
-    };
-  }
-
   /**
    * Returns true if {@code container} contains {@code test}, false otherwise.
    *
@@ -304,9 +286,7 @@ public class MarkerComparator implements Comparator<Marker> {
 
     MarkerComparator that = (MarkerComparator) o;
 
-    if (!strategy.equals(that.strategy)) return false;
-
-    return true;
+    return strategy.equals(that.strategy);
   }
 
   @Override

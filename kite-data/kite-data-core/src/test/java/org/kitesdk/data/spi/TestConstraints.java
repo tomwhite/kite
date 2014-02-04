@@ -20,13 +20,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Range;
 import com.google.common.collect.Ranges;
 import com.google.common.collect.Sets;
-import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
-import org.apache.commons.lang.ObjectUtils;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Assert;
@@ -483,7 +481,6 @@ public class TestConstraints {
     Constraints c = new Constraints().with("timestamp", oct_24_2013);
     Assert.assertFalse("Should not match", c.toKeyPredicate().apply(key));
 
-    c = new Constraints().toBefore("timestamp", oct_25_2013);
     c = new Constraints().toBefore("timestamp", oct_24_2013_end);
     LOG.info("Constraints: {}", c);
 

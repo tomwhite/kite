@@ -21,7 +21,6 @@ import org.kitesdk.data.DatasetReader;
 import org.kitesdk.data.Format;
 import org.kitesdk.data.Formats;
 import org.kitesdk.data.UnknownFormatException;
-import org.kitesdk.data.View;
 import org.kitesdk.data.spi.AbstractDatasetReader;
 import org.kitesdk.data.spi.Constraints;
 import org.kitesdk.data.spi.ReaderWriterState;

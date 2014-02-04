@@ -57,7 +57,6 @@ public class TestFileSystemView extends TestRefinableViews {
 
   @Test
   @Ignore("getCoveringPartitions is not yet implemented")
-  @Override
   @SuppressWarnings("unchecked")
   public void testCoveringPartitions() {
     // NOTE: this is an un-restricted write so all should succeed

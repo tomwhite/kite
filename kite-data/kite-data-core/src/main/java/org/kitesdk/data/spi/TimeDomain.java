@@ -35,13 +35,9 @@ import javax.annotation.concurrent.Immutable;
 import org.kitesdk.data.FieldPartitioner;
 import org.kitesdk.data.PartitionStrategy;
 import org.kitesdk.data.partition.CalendarFieldPartitioner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @Immutable
 public class TimeDomain {
-  private static final Logger LOG = LoggerFactory.getLogger(TimeDomain.class);
-
   private static final List<Integer> order = Lists.newArrayList(
       Calendar.YEAR, Calendar.MONTH, Calendar.DAY_OF_MONTH,
       Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.SECOND
@@ -61,12 +57,10 @@ public class TimeDomain {
     return domains.getUnchecked(Pair.of(strategy, source));
   }
 
-  private final PartitionStrategy strategy;
   // the calendar field partitioners from the strategy, in the correct order
   private final List<CalendarFieldPartitioner> partitioners;
 
   public TimeDomain(PartitionStrategy strategy, String sourceName) {
-    this.strategy = strategy;
     Map<Integer, CalendarFieldPartitioner> mapping = Maps.newHashMap();
     for (FieldPartitioner fp : strategy.getFieldPartitioners()) {
       // there may be partitioners for more than one source field

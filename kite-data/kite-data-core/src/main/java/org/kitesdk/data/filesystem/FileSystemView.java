@@ -121,7 +121,7 @@ class FileSystemView<E> extends AbstractRefineableView<E> {
 
   private static boolean cleanlyDelete(FileSystem fs, Path root, Path dir) {
     try {
-      boolean deleted = false;
+      boolean deleted;
       if (dir.isAbsolute()) {
         deleted = fs.delete(dir, true /* include any files */ );
       } else {

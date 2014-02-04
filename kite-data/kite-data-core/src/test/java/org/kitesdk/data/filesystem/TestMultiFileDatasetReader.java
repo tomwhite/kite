@@ -94,20 +94,20 @@ public class TestMultiFileDatasetReader extends TestDatasetReaders {
 
   @Test(expected = IllegalArgumentException.class)
   public void testRequriesFileSystem() throws IOException {
-    MultiFileDatasetReader<Record> reader = new MultiFileDatasetReader<Record>(
+    new MultiFileDatasetReader<Record>(
         null, Lists.newArrayList(TEST_FILE, TEST_FILE), DESCRIPTOR,
         CONSTRAINTS);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testRequriesFiles() throws IOException {
-    MultiFileDatasetReader<Record> reader = new MultiFileDatasetReader<Record>(
+    new MultiFileDatasetReader<Record>(
         fileSystem, null, DESCRIPTOR, CONSTRAINTS);
   }
 
   @Test(expected = IllegalArgumentException.class)
   public void testRequriesDescriptor() throws IOException {
-    MultiFileDatasetReader<Record> reader = new MultiFileDatasetReader<Record>(
+    new MultiFileDatasetReader<Record>(
         fileSystem, Lists.newArrayList(TEST_FILE, TEST_FILE), null,
         CONSTRAINTS);
   }

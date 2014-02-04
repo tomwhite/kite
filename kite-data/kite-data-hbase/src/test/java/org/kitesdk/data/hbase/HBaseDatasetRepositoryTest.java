@@ -276,10 +276,6 @@ public class HBaseDatasetRepositoryTest {
   /**
    * Creates a generic entity with the given schema, which must be migratable
    * from TestRecord. Data from TestRecord is filled in.
-   *
-   * @param uniqueIdx
-   * @param schemaString
-   * @return
    */
   private static GenericRecord createGenericEntity(long uniqueIdx, String schemaString) {
     String iStr = Long.toString(uniqueIdx);
@@ -409,12 +405,11 @@ public class HBaseDatasetRepositoryTest {
         .setSubfield2(1L).setSubfield3("subfield6").build();
     arrayRecordList.add(subRecord);
 
-    TestEntity entity = TestEntity.newBuilder()
+    return TestEntity.newBuilder()
         .setPart1("part1_" + iStr).setPart2("part2_" + iStr)
         .setField1("field1_" + iStr)
         .setField2("field2_" + iStr).setEnum$(TestEnum.ENUM3)
         .setField3(field3Map).setField4(embeddedRecord)
         .setField5(arrayRecordList).build();
-    return entity;
   }
 }

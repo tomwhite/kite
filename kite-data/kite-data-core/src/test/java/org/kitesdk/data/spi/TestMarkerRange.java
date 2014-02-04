@@ -28,7 +28,6 @@ public class TestMarkerRange {
   private static Marker OCT_15;
   private static Marker SEPT_30;
   private static Marker NOV_1;
-  private static PartitionStrategy strategy;
   private static MarkerComparator comparator;
 
   @BeforeClass
@@ -53,7 +52,7 @@ public class TestMarkerRange {
         .add("month", 11)
         .add("day", 1)
         .build();
-    strategy = new PartitionStrategy.Builder()
+    PartitionStrategy strategy = new PartitionStrategy.Builder()
         .year("timestamp")
         .month("timestamp")
         .day("timestamp")

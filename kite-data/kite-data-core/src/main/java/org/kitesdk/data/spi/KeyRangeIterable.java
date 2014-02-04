@@ -16,7 +16,6 @@
 
 package org.kitesdk.data.spi;
 
-
 import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Predicate;
@@ -29,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.kitesdk.data.FieldPartitioner;
 import org.kitesdk.data.PartitionStrategy;
@@ -186,11 +184,6 @@ class KeyRangeIterable implements Iterable<MarkerRange> {
    *
    * This method is used to add a <em>single</em> <em>projected</em> constraint
    * to the stack.
-   *
-   * @param projected
-   * @param name
-   * @param inner
-   * @return
    */
   private static Iterator<MarkerRange.Builder> addProjected(
       Predicate projected, String name,
@@ -233,10 +226,6 @@ class KeyRangeIterable implements Iterable<MarkerRange> {
     protected final void setItems(Iterable<I> items) {
       this.items = items;
       this.iterItems = items.iterator();
-    }
-
-    protected final void setInner(Iterable<T> inner) {
-      setInner(inner.iterator());
     }
 
     protected final void setInner(Iterator<T> inner) {

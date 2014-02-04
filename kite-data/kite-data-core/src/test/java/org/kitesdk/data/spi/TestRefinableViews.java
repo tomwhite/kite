@@ -31,14 +31,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @RunWith(Parameterized.class)
 public abstract class TestRefinableViews extends MiniDFSTest {
-
-  private static final Logger LOG =
-      LoggerFactory.getLogger(TestRefinableViews.class);
 
   protected static final long now = System.currentTimeMillis();
   protected static final StandardEvent event = StandardEvent.newBuilder()
@@ -107,8 +102,6 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         .build();
     this.unbounded = repo.create("test", testDescriptor);
   }
-
-  @Test public abstract void testCoveringPartitions();
 
   public static <E> void assertContentEquals(Set<E> expected, View<E> view) {
     DatasetReader<E> reader = view.newReader();
@@ -707,7 +700,7 @@ public abstract class TestRefinableViews extends MiniDFSTest {
     Assert.assertTrue("Should include any StandardEvent",
         unbounded.includes(event));
     Assert.assertTrue("Should include even null events",
-        unbounded.includes((StandardEvent) null));
+        unbounded.includes(null));
     Assert.assertTrue("Should include older event",
         unbounded.includes(sepEvent));
     Assert.assertTrue("Should include event",
@@ -739,7 +732,7 @@ public abstract class TestRefinableViews extends MiniDFSTest {
     Assert.assertTrue("Should include any StandardEvent",
         notPartitioned.includes(event));
     Assert.assertTrue("Should include even null events",
-        notPartitioned.includes((StandardEvent) null));
+        notPartitioned.includes(null));
     Assert.assertTrue("Should include older event",
         notPartitioned.includes(sepEvent));
     Assert.assertTrue("Should include event",

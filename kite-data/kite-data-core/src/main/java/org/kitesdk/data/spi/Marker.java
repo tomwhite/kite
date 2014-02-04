@@ -226,13 +226,6 @@ public abstract class Marker {
     }
 
     /**
-     * Clears the content already added to this builder so it can be reused.
-     */
-    public void clear() {
-      content.clear();
-    }
-
-    /**
      * Adds a named value to this {@code Builder}.
      *
      * @param name a String name for the value
