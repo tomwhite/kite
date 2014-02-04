@@ -51,6 +51,7 @@ public abstract class TestRefinableViews extends MiniDFSTest {
   protected static final StandardEvent octEvent = StandardEvent
       .newBuilder(event)
       .setTimestamp(1381612547042L) // Sat Oct 12 14:15:47 PDT 2013
+      .setUserId(1)
       .build();
   protected static final StandardEvent novEvent = StandardEvent
       .newBuilder(event)
@@ -162,6 +163,12 @@ public abstract class TestRefinableViews extends MiniDFSTest {
     long novStart = new DateTime(2013, 11, 1, 0, 0, DateTimeZone.UTC).getMillis();
     assertContentEquals(Sets.<StandardEvent>newHashSet(octEvent),
         unbounded.from("timestamp", octStart).toBefore("timestamp", novStart));
+
+    // with
+    // this tests that non-key partition fields are filtered (user_id is not a part of
+    // the partition strategy)
+    assertContentEquals(Sets.newHashSet(sepEvent, novEvent),
+        unbounded.with("user_id", 0L));
   }
 
   @Test
@@ -202,6 +209,35 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         try {
           writer.open();
           writer.write(event);
+        } finally {
+          writer.close();
+        }
+      }
+    });
+  }
+
+  @Test
+  public void testLimitedWriterForNonPartitionedField() {
+    final RefineableView<StandardEvent> view = unbounded.with("user_id", 0L);
+
+    DatasetWriter<StandardEvent> writer = view.newWriter();
+    try {
+      writer.open();
+      writer.write(sepEvent);
+      writer.write(novEvent);
+    } finally {
+      writer.close();
+    }
+    assertContentEquals(Sets.newHashSet(sepEvent, novEvent), view);
+
+    TestHelpers.assertThrows("Should reject event with user_id = 1",
+        IllegalArgumentException.class, new Runnable() {
+      @Override
+      public void run() {
+        DatasetWriter<StandardEvent> writer = view.newWriter();
+        try {
+          writer.open();
+          writer.write(octEvent);
         } finally {
           writer.close();
         }
