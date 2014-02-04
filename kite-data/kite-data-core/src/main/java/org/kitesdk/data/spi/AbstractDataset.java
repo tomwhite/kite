@@ -69,7 +69,7 @@ public abstract class AbstractDataset<E> implements Dataset<E>, RefineableView<E
   }
 
   @Override
-  public boolean canContain(E entity) {
+  public boolean includes(E entity) {
     return true;
   }
   

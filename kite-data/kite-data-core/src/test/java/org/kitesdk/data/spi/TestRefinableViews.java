@@ -215,14 +215,14 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         unbounded.from("timestamp", instant);
 
     // test events
-    Assert.assertFalse("Should not contain older event",
-        fromOctober.canContain(sepEvent));
-    Assert.assertTrue("Should contain event",
-        fromOctober.canContain(octEvent));
-    Assert.assertTrue("Should contain newer event",
-        fromOctober.canContain(novEvent));
-    Assert.assertTrue("Should contain current event",
-        fromOctober.canContain(event));
+    Assert.assertFalse("Should not include older event",
+        fromOctober.includes(sepEvent));
+    Assert.assertTrue("Should include event",
+        fromOctober.includes(octEvent));
+    Assert.assertTrue("Should include newer event",
+        fromOctober.includes(novEvent));
+    Assert.assertTrue("Should include current event",
+        fromOctober.includes(event));
 
     // special case: to(same instant)
     Assert.assertNotNull("to(same instant) should succeed",
@@ -291,14 +291,14 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         unbounded.fromAfter("timestamp", instant);
 
     // test events
-    Assert.assertFalse("Should not contain older event",
-        afterSep.canContain(sepEvent));
-    Assert.assertTrue("Should contain event",
-        afterSep.canContain(octEvent));
-    Assert.assertTrue("Should contain newer event",
-        afterSep.canContain(novEvent));
-    Assert.assertTrue("Should contain current event",
-        afterSep.canContain(event));
+    Assert.assertFalse("Should not include older event",
+        afterSep.includes(sepEvent));
+    Assert.assertTrue("Should include event",
+        afterSep.includes(octEvent));
+    Assert.assertTrue("Should include newer event",
+        afterSep.includes(novEvent));
+    Assert.assertTrue("Should include current event",
+        afterSep.includes(event));
 
     // special case: to(same instant)
     TestHelpers.assertThrows("to(same instant) should fail",
@@ -372,14 +372,14 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         unbounded.to("timestamp", instant);
 
     // test events
-    Assert.assertTrue("Should contain older event",
-        toOct.canContain(sepEvent));
-    Assert.assertFalse("Should not contain event",
-        toOct.canContain(octEvent));
-    Assert.assertFalse("Should not contain newer event",
-        toOct.canContain(novEvent));
-    Assert.assertFalse("Should not contain current event",
-        toOct.canContain(event));
+    Assert.assertTrue("Should include older event",
+        toOct.includes(sepEvent));
+    Assert.assertFalse("Should not include event",
+        toOct.includes(octEvent));
+    Assert.assertFalse("Should not include newer event",
+        toOct.includes(novEvent));
+    Assert.assertFalse("Should not include current event",
+        toOct.includes(event));
 
     // special case: from(same instant)
     Assert.assertNotNull("from(same instant) should succeed",
@@ -448,14 +448,14 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         unbounded.toBefore("timestamp", instant);
 
     // test events
-    Assert.assertTrue("Should contain older event",
-        beforeOct.canContain(sepEvent));
-    Assert.assertFalse("Should not contain event",
-        beforeOct.canContain(octEvent));
-    Assert.assertFalse("Should not contain newer event",
-        beforeOct.canContain(novEvent));
-    Assert.assertFalse("Should not contain current event",
-        beforeOct.canContain(event));
+    Assert.assertTrue("Should include older event",
+        beforeOct.includes(sepEvent));
+    Assert.assertFalse("Should not include event",
+        beforeOct.includes(octEvent));
+    Assert.assertFalse("Should not include newer event",
+        beforeOct.includes(novEvent));
+    Assert.assertFalse("Should not include current event",
+        beforeOct.includes(event));
 
     // special case: from(same instant)
     TestHelpers.assertThrows("from(same instant) should fail",
@@ -583,14 +583,14 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         .from("timestamp", start).to("timestamp", end);
 
     // test events
-    Assert.assertFalse("Should not contain older event",
-        oct.canContain(sepEvent));
-    Assert.assertTrue("Should contain event",
-        oct.canContain(octEvent));
-    Assert.assertFalse("Should not contain newer event",
-        oct.canContain(novEvent));
-    Assert.assertFalse("Should not contain current event",
-        oct.canContain(event));
+    Assert.assertFalse("Should not include older event",
+        oct.includes(sepEvent));
+    Assert.assertTrue("Should include event",
+        oct.includes(octEvent));
+    Assert.assertFalse("Should not include newer event",
+        oct.includes(novEvent));
+    Assert.assertFalse("Should not include current event",
+        oct.includes(event));
 
     // special cases
     Assert.assertNotNull("to(start) should succeed",
@@ -694,16 +694,16 @@ public abstract class TestRefinableViews extends MiniDFSTest {
   @Test
   public void testUnboundedView() {
     // test events
-    Assert.assertTrue("Should contain any StandardEvent",
-        unbounded.canContain(event));
-    Assert.assertTrue("Should contain even null events",
-        unbounded.canContain((StandardEvent) null));
-    Assert.assertTrue("Should contain older event",
-        unbounded.canContain(sepEvent));
-    Assert.assertTrue("Should contain event",
-        unbounded.canContain(octEvent));
-    Assert.assertTrue("Should contain newer event",
-        unbounded.canContain(novEvent));
+    Assert.assertTrue("Should include any StandardEvent",
+        unbounded.includes(event));
+    Assert.assertTrue("Should include even null events",
+        unbounded.includes((StandardEvent) null));
+    Assert.assertTrue("Should include older event",
+        unbounded.includes(sepEvent));
+    Assert.assertTrue("Should include event",
+        unbounded.includes(octEvent));
+    Assert.assertTrue("Should include newer event",
+        unbounded.includes(novEvent));
 
     // test range limiting
     Assert.assertNotNull("from should succeed",
@@ -726,16 +726,16 @@ public abstract class TestRefinableViews extends MiniDFSTest {
         repo.create("flat", flatDescriptor);
 
     // test events
-    Assert.assertTrue("Should contain any StandardEvent",
-        notPartitioned.canContain(event));
-    Assert.assertTrue("Should contain even null events",
-        notPartitioned.canContain((StandardEvent) null));
-    Assert.assertTrue("Should contain older event",
-        notPartitioned.canContain(sepEvent));
-    Assert.assertTrue("Should contain event",
-        notPartitioned.canContain(octEvent));
-    Assert.assertTrue("Should contain newer event",
-        notPartitioned.canContain(novEvent));
+    Assert.assertTrue("Should include any StandardEvent",
+        notPartitioned.includes(event));
+    Assert.assertTrue("Should include even null events",
+        notPartitioned.includes((StandardEvent) null));
+    Assert.assertTrue("Should include older event",
+        notPartitioned.includes(sepEvent));
+    Assert.assertTrue("Should include event",
+        notPartitioned.includes(octEvent));
+    Assert.assertTrue("Should include newer event",
+        notPartitioned.includes(novEvent));
 
     // test range limiting
     Assert.assertNotNull("from should succeed",

@@ -86,8 +86,8 @@ class PartitionedDatasetWriter<E> implements DatasetWriter<E> {
     if (writer == null) {
       // avoid checking in every whether the entity belongs in the view by only
       // checking when a new writer is created
-      Preconditions.checkArgument(view.canContain(entity),
-          "View {} does not contain entity {}", view, entity);
+      Preconditions.checkArgument(view.includes(entity),
+          "View {} does not include entity {}", view, entity);
       // get a new key because it is stored in the cache
       StorageKey key = StorageKey.copy(reusedKey);
       try {

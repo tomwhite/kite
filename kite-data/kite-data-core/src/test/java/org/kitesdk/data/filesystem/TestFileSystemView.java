@@ -76,21 +76,21 @@ public class TestFileSystemView extends TestRefinableViews {
 
     assertTrue(coveringPartitions.hasNext());
     View v1 = coveringPartitions.next();
-    assertTrue(v1.canContain(standardEvent(sepEvent.getTimestamp())));
-    assertFalse(v1.canContain(standardEvent(octEvent.getTimestamp())));
-    assertFalse(v1.canContain(standardEvent(novEvent.getTimestamp())));
+    assertTrue(v1.includes(standardEvent(sepEvent.getTimestamp())));
+    assertFalse(v1.includes(standardEvent(octEvent.getTimestamp())));
+    assertFalse(v1.includes(standardEvent(novEvent.getTimestamp())));
 
     assertTrue(coveringPartitions.hasNext());
     View v2 = coveringPartitions.next();
-    assertFalse(v2.canContain(standardEvent(sepEvent.getTimestamp())));
-    assertTrue(v2.canContain(standardEvent(octEvent.getTimestamp())));
-    assertFalse(v2.canContain(standardEvent(novEvent.getTimestamp())));
+    assertFalse(v2.includes(standardEvent(sepEvent.getTimestamp())));
+    assertTrue(v2.includes(standardEvent(octEvent.getTimestamp())));
+    assertFalse(v2.includes(standardEvent(novEvent.getTimestamp())));
 
     assertTrue(coveringPartitions.hasNext());
     View v3 = coveringPartitions.next();
-    assertFalse(v3.canContain(standardEvent(sepEvent.getTimestamp())));
-    assertFalse(v3.canContain(standardEvent(octEvent.getTimestamp())));
-    assertTrue(v3.canContain(standardEvent(novEvent.getTimestamp())));
+    assertFalse(v3.includes(standardEvent(sepEvent.getTimestamp())));
+    assertFalse(v3.includes(standardEvent(octEvent.getTimestamp())));
+    assertTrue(v3.includes(standardEvent(novEvent.getTimestamp())));
 
     assertFalse(coveringPartitions.hasNext());
   }

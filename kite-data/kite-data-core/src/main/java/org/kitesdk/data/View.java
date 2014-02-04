@@ -68,11 +68,12 @@ public interface View<E> {
   DatasetWriter<E> newWriter();
 
   /**
-   * Returns whether an entity {@link Object} can be contained in this {@code View}.
+   * Returns whether an entity {@link Object} would be included in this {@code View} if
+   * it were present in the {@code Dataset}.
    *
    * @param entity an entity {@code Object}
    * @return true if {@code entity} is in the partition space of this view.
    */
-  boolean canContain(E entity);
+  boolean includes(E entity);
 
 }
