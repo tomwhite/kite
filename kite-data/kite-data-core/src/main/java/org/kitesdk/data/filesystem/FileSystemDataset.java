@@ -15,7 +15,13 @@
  */
 package org.kitesdk.data.filesystem;
 
-import org.kitesdk.data.*;
+import org.kitesdk.data.Dataset;
+import org.kitesdk.data.DatasetDescriptor;
+import org.kitesdk.data.DatasetException;
+import org.kitesdk.data.FieldPartitioner;
+import org.kitesdk.data.PartitionKey;
+import org.kitesdk.data.PartitionStrategy;
+import org.kitesdk.data.RefineableView;
 import org.kitesdk.data.impl.Accessor;
 import org.kitesdk.data.spi.AbstractDataset;
 import org.kitesdk.data.spi.PartitionListener;
