@@ -72,34 +72,29 @@ public abstract class AbstractDataset<E> implements Dataset<E>, RefineableView<E
   public boolean includes(E entity) {
     return true;
   }
-  
+
   @Override
-  public RefineableView<E> with(String name) {
-    return asRefineableView().with(name);
+  public RefineableView<E> with(String name, Object... values) {
+    return asRefineableView().with(name, values);
   }
 
   @Override
-  public RefineableView<E> with(String name, Object value) {
-    return asRefineableView().with(name, value);
-  }
-
-  @Override
-  public RefineableView<E> from(String name, Object value) {
+  public RefineableView<E> from(String name, Comparable value) {
     return asRefineableView().from(name, value);
   }
 
   @Override
-  public RefineableView<E> fromAfter(String name, Object value) {
+  public RefineableView<E> fromAfter(String name, Comparable value) {
     return asRefineableView().fromAfter(name, value);
   }
 
   @Override
-  public RefineableView<E> to(String name, Object value) {
+  public RefineableView<E> to(String name, Comparable value) {
     return asRefineableView().to(name, value);
   }
 
   @Override
-  public RefineableView<E> toBefore(String name, Object value) {
+  public RefineableView<E> toBefore(String name, Comparable value) {
     return asRefineableView().toBefore(name, value);
   }
 

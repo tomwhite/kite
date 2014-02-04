@@ -134,33 +134,28 @@ public abstract class AbstractRefineableView<E> implements RefineableView<E> {
   }
 
   @Override
-  public AbstractRefineableView<E> with(String name) {
-    return filter(constraints.with(name));
+  public AbstractRefineableView<E> with(String name, Object... values) {
+    return filter(constraints.with(name, values));
   }
 
   @Override
-  public AbstractRefineableView<E> with(String name, Object value) {
-    return filter(constraints.with(name, value));
+  public AbstractRefineableView<E> from(String name, Comparable value) {
+    return filter(constraints.from(name, value));
   }
 
   @Override
-  public AbstractRefineableView<E> from(String name, Object value) {
-    return filter(constraints.from(name, (Comparable) value));
+  public AbstractRefineableView<E> fromAfter(String name, Comparable value) {
+    return filter(constraints.fromAfter(name, value));
   }
 
   @Override
-  public AbstractRefineableView<E> fromAfter(String name, Object value) {
-    return filter(constraints.fromAfter(name, (Comparable) value));
+  public AbstractRefineableView<E> to(String name, Comparable value) {
+    return filter(constraints.to(name, value));
   }
 
   @Override
-  public AbstractRefineableView<E> to(String name, Object value) {
-    return filter(constraints.to(name, (Comparable) value));
-  }
-
-  @Override
-  public AbstractRefineableView<E> toBefore(String name, Object value) {
-    return filter(constraints.toBefore(name, (Comparable) value));
+  public AbstractRefineableView<E> toBefore(String name, Comparable value) {
+    return filter(constraints.toBefore(name, value));
   }
 
   @Override
