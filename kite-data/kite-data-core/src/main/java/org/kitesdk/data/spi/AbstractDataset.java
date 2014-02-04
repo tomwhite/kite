@@ -20,8 +20,9 @@ import org.kitesdk.data.Dataset;
 import org.kitesdk.data.DatasetReader;
 import org.kitesdk.data.DatasetWriter;
 import org.kitesdk.data.RefineableView;
-import org.kitesdk.data.View;
 import javax.annotation.concurrent.Immutable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A common Dataset base class to simplify implementations.
@@ -31,6 +32,10 @@ import javax.annotation.concurrent.Immutable;
  */
 @Immutable
 public abstract class AbstractDataset<E> implements Dataset<E>, RefineableView<E> {
+
+  private static final Logger logger = LoggerFactory.getLogger(AbstractDataset.class);
+
+  protected abstract RefineableView<E> asRefineableView();
 
   @Override
   public Dataset<E> getDataset() {
@@ -50,8 +55,52 @@ public abstract class AbstractDataset<E> implements Dataset<E>, RefineableView<E
   }
 
   @Override
+  public DatasetWriter<E> newWriter() {
+    logger.debug("Getting writer to dataset:{}", this);
+
+    return asRefineableView().newWriter();
+  }
+
+  @Override
+  public DatasetReader<E> newReader() {
+    logger.debug("Getting reader for dataset:{}", this);
+
+    return asRefineableView().newReader();
+  }
+
+  @Override
   public boolean canContain(E entity) {
     return true;
+  }
+  
+  @Override
+  public RefineableView<E> with(String name) {
+    return asRefineableView().with(name);
+  }
+
+  @Override
+  public RefineableView<E> with(String name, Object value) {
+    return asRefineableView().with(name, value);
+  }
+
+  @Override
+  public RefineableView<E> from(String name, Object value) {
+    return asRefineableView().from(name, value);
+  }
+
+  @Override
+  public RefineableView<E> fromAfter(String name, Object value) {
+    return asRefineableView().fromAfter(name, value);
+  }
+
+  @Override
+  public RefineableView<E> to(String name, Object value) {
+    return asRefineableView().to(name, value);
+  }
+
+  @Override
+  public RefineableView<E> toBefore(String name, Object value) {
+    return asRefineableView().toBefore(name, value);
   }
 
 }

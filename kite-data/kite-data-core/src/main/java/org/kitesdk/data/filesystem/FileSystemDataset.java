@@ -19,7 +19,6 @@ import org.kitesdk.data.*;
 import org.kitesdk.data.impl.Accessor;
 import org.kitesdk.data.spi.AbstractDataset;
 import org.kitesdk.data.spi.PartitionListener;
-import org.kitesdk.data.spi.StorageKey;
 import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
@@ -112,20 +111,6 @@ class FileSystemDataset<E> extends AbstractDataset<E> {
     return partitionListener;
   }
 
-  @Override
-  public DatasetWriter<E> newWriter() {
-    logger.debug("Getting writer to dataset:{}", this);
-
-    return unbounded.newWriter();
-  }
-
-  @Override
-  public DatasetReader<E> newReader() {
-    logger.debug("Getting reader for dataset:{}", this);
-
-    return unbounded.newReader();
-  }
-
   public boolean deleteAll() {
     return unbounded.deleteAll();
   }
@@ -135,33 +120,8 @@ class FileSystemDataset<E> extends AbstractDataset<E> {
   }
 
   @Override
-  public FileSystemView<E> with(String name) {
-    return (FileSystemView<E>) unbounded.with(name);
-  }
-
-  @Override
-  public FileSystemView<E> with(String name, Object value) {
-    return (FileSystemView<E>) unbounded.with(name, value);
-  }
-
-  @Override
-  public FileSystemView<E> from(String name, Object value) {
-    return (FileSystemView<E>) unbounded.from(name, value);
-  }
-
-  @Override
-  public FileSystemView<E> fromAfter(String name, Object value) {
-    return (FileSystemView<E>) unbounded.fromAfter(name, value);
-  }
-
-  @Override
-  public FileSystemView<E> to(String name, Object value) {
-    return (FileSystemView<E>) unbounded.to(name, value);
-  }
-
-  @Override
-  public FileSystemView<E> toBefore(String name, Object value) {
-    return (FileSystemView<E>) unbounded.toBefore(name, value);
+  protected RefineableView<E> asRefineableView() {
+    return unbounded;
   }
 
   @Override

@@ -17,12 +17,11 @@ package org.kitesdk.data.hbase;
 
 import org.kitesdk.data.Dataset;
 import org.kitesdk.data.DatasetDescriptor;
-import org.kitesdk.data.DatasetReader;
-import org.kitesdk.data.DatasetWriter;
 import org.kitesdk.data.Key;
 import org.kitesdk.data.PartitionKey;
 import org.kitesdk.data.PartitionStrategy;
 import org.kitesdk.data.RandomAccessDataset;
+import org.kitesdk.data.RefineableView;
 import org.kitesdk.data.hbase.impl.Dao;
 import org.kitesdk.data.spi.AbstractDataset;
 
@@ -76,47 +75,8 @@ class DaoDataset<E> extends AbstractDataset<E> implements RandomAccessDataset<E>
   }
 
   @Override
-  public DatasetWriter<E> newWriter() {
-    logger.debug("Getting writer to dataset:{}", this);
-
-    return unbounded.newWriter();
-  }
-
-  @Override
-  public DatasetReader<E> newReader() {
-    logger.debug("Getting reader for dataset:{}", this);
-
-    return unbounded.newReader();
-  }
-
-  @Override
-  public DaoView<E> with(String name) {
-    return (DaoView<E>) unbounded.with(name);
-  }
-
-  @Override
-  public DaoView<E> with(String name, Object value) {
-    return (DaoView<E>) unbounded.with(name, value);
-  }
-
-  @Override
-  public DaoView<E> from(String name, Object value) {
-    return (DaoView<E>) unbounded.from(name, value);
-  }
-
-  @Override
-  public DaoView<E> fromAfter(String name, Object value) {
-    return (DaoView<E>) unbounded.fromAfter(name, value);
-  }
-
-  @Override
-  public DaoView<E> to(String name, Object value) {
-    return (DaoView<E>) unbounded.to(name, value);
-  }
-
-  @Override
-  public DaoView<E> toBefore(String name, Object value) {
-    return (DaoView<E>) unbounded.toBefore(name, value);
+  protected RefineableView<E> asRefineableView() {
+    return unbounded;
   }
 
   @Override
