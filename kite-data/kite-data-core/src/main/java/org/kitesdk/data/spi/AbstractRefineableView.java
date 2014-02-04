@@ -135,26 +135,31 @@ public abstract class AbstractRefineableView<E> implements RefineableView<E> {
 
   @Override
   public AbstractRefineableView<E> with(String name, Object... values) {
+    Conversions.checkTypeConsistency(dataset.getDescriptor(), name, values);
     return filter(constraints.with(name, values));
   }
 
   @Override
   public AbstractRefineableView<E> from(String name, Comparable value) {
+    Conversions.checkTypeConsistency(dataset.getDescriptor(), name, value);
     return filter(constraints.from(name, value));
   }
 
   @Override
   public AbstractRefineableView<E> fromAfter(String name, Comparable value) {
+    Conversions.checkTypeConsistency(dataset.getDescriptor(), name, value);
     return filter(constraints.fromAfter(name, value));
   }
 
   @Override
   public AbstractRefineableView<E> to(String name, Comparable value) {
+    Conversions.checkTypeConsistency(dataset.getDescriptor(), name, value);
     return filter(constraints.to(name, value));
   }
 
   @Override
   public AbstractRefineableView<E> toBefore(String name, Comparable value) {
+    Conversions.checkTypeConsistency(dataset.getDescriptor(), name, value);
     return filter(constraints.toBefore(name, value));
   }
 

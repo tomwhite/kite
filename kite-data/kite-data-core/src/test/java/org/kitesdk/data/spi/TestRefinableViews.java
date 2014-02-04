@@ -121,6 +121,16 @@ public abstract class TestRefinableViews extends MiniDFSTest {
     }
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void testNonExistentField() {
+    unbounded.with("nosuchfield");
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testInconsistentFieldType() {
+    unbounded.with("timestamp", 0); // not '0L'
+  }
+
   @Test
   public void testLimitedReader() {
     // NOTE: this is an un-restricted write so all should succeed
