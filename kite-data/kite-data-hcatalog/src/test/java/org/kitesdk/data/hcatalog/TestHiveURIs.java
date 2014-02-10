@@ -16,6 +16,7 @@
 
 package org.kitesdk.data.hcatalog;
 
+import org.junit.Ignore;
 import org.kitesdk.data.DatasetDescriptor;
 import org.kitesdk.data.DatasetRepositories;
 import org.kitesdk.data.DatasetRepository;
@@ -73,6 +74,20 @@ public class TestHiveURIs extends TestFileSystemURIs {
 
   @Test
   public void testManagedURIWithHostAndPort() {
+    try {
+      // This should cause a failure when trying to connect to meta-host
+      DatasetRepositories.open("repo:hive://meta-host:1234");
+      Assert.fail("Failed to set the MetaStore host via repo URI");
+    } catch (RuntimeException ex) {
+      Assert.assertEquals(MetaException.class, ex.getCause().getClass());
+      // The exception isn't properly wrapped as a cause, but this will check
+      // that the hostname is used and in the exception message.
+      Assert.assertTrue(ex.getCause().getMessage().contains("meta-host"));
+    }
+  }
+
+  @Test
+  public void testManagedURIWithHostAndPortAndRootPath() {
     try {
       // This should cause a failure when trying to connect to meta-host
       DatasetRepositories.open("repo:hive://meta-host:1234/");
