@@ -46,6 +46,7 @@ class FileSystemDatasetKeyInputFormat<E> extends InputFormat<E, Void> {
   }
 
   @Override
+  @SuppressWarnings("deprecation")
   public List<InputSplit> getSplits(JobContext jobContext) throws IOException {
     Job job = new Job(jobContext.getConfiguration());
     Format format = dataset.getDescriptor().getFormat();

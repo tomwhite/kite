@@ -17,31 +17,24 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>kite-hadoop-deps-parent</artifactId>
+  <artifactId>kite-hadoop-dependencies</artifactId>
   <packaging>pom</packaging>
-
-  <modules>
-    <!-- remove Hadoop 1 modules during release, since the new generated artifact
-         coordinates are not unique
-    -->
-    <module>hadoop1</module>
-    <module>hadoop1-test</module>
-    <module>hadoop2</module>
-    <module>hadoop2-test</module>
-    <module>default</module>
-    <module>default-test</module>
-  </modules>
+  <version>0.11.1-SNAPSHOT-hadoop2</version>
 
   <parent>
     <groupId>org.kitesdk</groupId>
-    <artifactId>kite-parent</artifactId>
-    <version>0.12.1-SNAPSHOT</version>
+    <artifactId>kite-hadoop-deps-parent</artifactId>
+    <version>0.11.1-SNAPSHOT</version>
   </parent>
 
-  <name>Kite Hadoop Dependencies Module</name>
+  <name>Kite Hadoop-2 Dependencies Module</name>
   <description>
-    The Kite Hadoop Dependencies module aggregates Hadoop dependencies
+    The Kite Hadoop Dependencies module aggregates Hadoop-2 dependencies
   </description>
+
+  <properties>
+    <vers.hadoop>2.2.0</vers.hadoop>
+  </properties>
 
   <build>
     <plugins>
@@ -66,5 +59,24 @@
       </plugins>
     </pluginManagement>
   </build>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>${vers.hadoop}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-hdfs</artifactId>
+      <version>${vers.hadoop}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.avro</groupId>
+      <artifactId>avro-mapred</artifactId>
+      <classifier>hadoop2</classifier>
+      <version>${vers.avro}</version>
+    </dependency>
+  </dependencies>
 
 </project>
