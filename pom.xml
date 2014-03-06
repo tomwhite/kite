@@ -1039,7 +1039,7 @@
         <vers.hadoop-deps>${project.version}-hadoop2</vers.hadoop-deps>
         <vers.flume>1.4.0</vers.flume>
         <vers.hadoop>2.2.0</vers.hadoop>
-        <vers.hbase>0.94.6</vers.hbase>
+        <vers.hbase>0.96.1.1-hadoop2</vers.hbase>
         <vers.hcatalog>0.5.0-incubating</vers.hcatalog>
         <vers.hive>0.10.0</vers.hive>
       </properties>
