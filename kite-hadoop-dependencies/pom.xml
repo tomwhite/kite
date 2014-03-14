@@ -21,7 +21,7 @@
   <packaging>pom</packaging>
 
   <modules>
-    <!-- remove Hadoop 1 modules during release, since the new generated artifact
+    <!-- remove Hadoop 1 and 2 modules during release, since the new generated artifact
          coordinates are not unique
     -->
     <module>hadoop1</module>

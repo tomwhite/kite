@@ -17,19 +17,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>kite-hadoop-test-dependencies</artifactId>
+  <artifactId>kite-hbase-test-dependencies</artifactId>
   <packaging>pom</packaging>
   <version>0.12.1-SNAPSHOT-hadoop2</version>
 
   <parent>
     <groupId>org.kitesdk</groupId>
-    <artifactId>kite-hadoop-deps-parent</artifactId>
+    <artifactId>kite-hbase-deps-parent</artifactId>
     <version>0.12.1-SNAPSHOT</version>
   </parent>
 
-  <name>Kite Hadoop-2 Test Dependencies Module</name>
+  <name>Kite HBase Hadoop-2 Test Dependencies Module</name>
   <description>
-    The Kite Hadoop Dependencies module aggregates Hadoop-2 dependencies
+    The Kite HBase Dependencies module aggregates HBase Hadoop-2 dependencies
   </description>
 
   <properties>
@@ -62,28 +62,9 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-common</artifactId>
-      <version>${vers.hadoop}</version>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-hdfs</artifactId>
-      <version>${vers.hadoop}</version>
-      <type>test-jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.hadoop</groupId>
-      <artifactId>hadoop-minicluster</artifactId>
-      <version>${vers.hadoop}</version>
-    </dependency>
-    <!-- missing from Hadoop, and needed for local job runner -->
-    <dependency>
-      <groupId>commons-httpclient</groupId>
-      <artifactId>commons-httpclient</artifactId>
-      <version>3.1</version>
-      <scope>test</scope>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-testing-util</artifactId>
+      <version>${vers.hbase2}</version>
     </dependency>
   </dependencies>
 
