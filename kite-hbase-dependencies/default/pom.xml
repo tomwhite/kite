@@ -59,14 +59,14 @@
   <dependencies>
     <dependency>
       <groupId>org.apache.hbase</groupId>
-      <artifactId>hbase</artifactId>
-      <version>${vers.hbase}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-log4j12</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>hbase-client</artifactId>
+      <version>${vers.hbase2}</version>
+    </dependency>
+    <!-- needed for MR classes -->
+    <dependency>
+      <groupId>org.apache.hbase</groupId>
+      <artifactId>hbase-server</artifactId>
+      <version>${vers.hbase2}</version>
     </dependency>
   </dependencies>
 
