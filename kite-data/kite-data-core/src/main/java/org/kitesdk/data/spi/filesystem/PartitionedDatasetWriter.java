@@ -75,7 +75,9 @@ class PartitionedDatasetWriter<E> implements DatasetWriter<E> {
     LOG.debug("Opening partitioned dataset writer w/strategy:{}",
       partitionStrategy);
 
-    cachedWriters = CacheBuilder.newBuilder().maximumSize(maxWriters)
+    // make the cache size larger than maxWriters since the cache can evict before
+    // hitting the limit
+    cachedWriters = CacheBuilder.newBuilder().maximumSize(3 * maxWriters / 2)
       .removalListener(new DatasetWriterCloser<E>())
       .build(new DatasetWriterCacheLoader<E>(view));
 
