@@ -26,6 +26,7 @@ import javax.annotation.concurrent.Immutable;
 import org.apache.avro.Schema;
 import org.kitesdk.data.DatasetException;
 
+import org.kitesdk.data.PartitionStrategy;
 import org.kitesdk.data.RefinableView;
 import org.kitesdk.data.View;
 import org.slf4j.Logger;
@@ -143,7 +144,7 @@ public abstract class AbstractRefinableView<E> implements RefinableView<E> {
 
   @Override
   public AbstractRefinableView<E> with(String name, Object... values) {
-    return filter(constraints.with(name, roundTripFieldValues(name, values)));
+    return filter(constraints.with(name, values));
   }
 
   @Override
@@ -196,21 +197,16 @@ public abstract class AbstractRefinableView<E> implements RefinableView<E> {
 
   @SuppressWarnings("unchecked")
   private Comparable roundTripFieldValue(String name, Object value) {
-    Schema schema = dataset.getDescriptor().getSchema();
+    DatasetDescriptor descriptor = dataset.getDescriptor();
+    Schema schema = descriptor.getSchema();
+    PartitionStrategy strategy = null;
+    if (descriptor.isPartitioned()) {
+      strategy = descriptor.getPartitionStrategy();
+    }
     SchemaUtil.checkTypeConsistency(schema, name, value);
     try {
-      return (Comparable) DataModelUtil.roundTripFieldValue(schema, type, name,
-          value);
-    } catch (IOException ex) {
-      throw new DatasetException("IO error trying to round trip a field", ex);
-    }
-  }
-
-  private Object[] roundTripFieldValues(String name, Object[] values) {
-    Schema schema = dataset.getDescriptor().getSchema();
-    SchemaUtil.checkTypeConsistency(schema, name, values);
-    try {
-      return DataModelUtil.roundTripFieldValues(schema, type, name, values);
+      return (Comparable) DataModelUtil.roundTripFieldValue(
+          schema, strategy, type, name, value);
     } catch (IOException ex) {
       throw new DatasetException("IO error trying to round trip a field", ex);
     }
