@@ -126,40 +126,4 @@ public class DataModelUtil {
 
     return readerSchema;
   }
-
-  /**
-   * Take the given writerField name and value and round trip the value through
-   * Avro serialization using the given writerSchema.
-   *
-   * @param <E> The entity type
-   * @param writerSchema The {@link Schema} for the entity
-   * @param type The Java class of the entity type
-   * @param name The name of the writerField
-   * @param value The value of the writerField
-   * @return The value after being serialized/deserialized
-   * @throws IOException There was an IO error with (de)serialization
-   */
-  @SuppressWarnings("unchecked")
-  public static <E> Object roundTripFieldValue(Schema writerSchema,
-      PartitionStrategy strategy, Class<E> type, String name, Object value)
-      throws IOException {
-    GenericData dataModel = getDataModelForType(type);
-    Schema writerFieldSchema = SchemaUtil.fieldSchema(
-        writerSchema, strategy, name);
-
-    ByteArrayOutputStream out = new ByteArrayOutputStream();
-    DatumWriter<Object> writer = new ReflectDatumWriter<Object>(writerFieldSchema);
-    BinaryEncoder binaryEncoder = EncoderFactory.get().binaryEncoder(out, null);
-    writer.write(value, binaryEncoder);
-    binaryEncoder.flush();
-
-    Schema readerFieldSchema = SchemaUtil.fieldSchema(
-        getReaderSchema(type, writerSchema), strategy, name);
-
-    ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-    DatumReader reader = dataModel.createDatumReader(writerFieldSchema, readerFieldSchema);
-    Object newValue = reader.read(null, DecoderFactory.get().binaryDecoder(in, null));
-
-    return newValue;
-  }
 }

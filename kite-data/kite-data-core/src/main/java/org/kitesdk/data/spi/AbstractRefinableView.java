@@ -16,17 +16,11 @@
 
 package org.kitesdk.data.spi;
 
+import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
+import javax.annotation.concurrent.Immutable;
 import org.kitesdk.data.Dataset;
 import org.kitesdk.data.DatasetDescriptor;
-import com.google.common.base.Objects;
-import java.io.IOException;
-
-import javax.annotation.concurrent.Immutable;
-import org.apache.avro.Schema;
-import org.kitesdk.data.DatasetException;
-
-import org.kitesdk.data.PartitionStrategy;
 import org.kitesdk.data.RefinableView;
 import org.kitesdk.data.View;
 import org.slf4j.Logger;
@@ -149,22 +143,22 @@ public abstract class AbstractRefinableView<E> implements RefinableView<E> {
 
   @Override
   public AbstractRefinableView<E> from(String name, Comparable value) {
-    return filter(constraints.from(name, roundTripFieldValue(name, value)));
+    return filter(constraints.from(name, value));
   }
 
   @Override
   public AbstractRefinableView<E> fromAfter(String name, Comparable value) {
-    return filter(constraints.fromAfter(name, roundTripFieldValue(name, value)));
+    return filter(constraints.fromAfter(name, value));
   }
 
   @Override
   public AbstractRefinableView<E> to(String name, Comparable value) {
-    return filter(constraints.to(name, roundTripFieldValue(name, value)));
+    return filter(constraints.to(name, value));
   }
 
   @Override
   public AbstractRefinableView<E> toBefore(String name, Comparable value) {
-    return filter(constraints.toBefore(name, roundTripFieldValue(name, value)));
+    return filter(constraints.toBefore(name, value));
   }
 
   @Override
@@ -193,22 +187,5 @@ public abstract class AbstractRefinableView<E> implements RefinableView<E> {
         .add("dataset", dataset)
         .add("constraints", constraints)
         .toString();
-  }
-
-  @SuppressWarnings("unchecked")
-  private Comparable roundTripFieldValue(String name, Object value) {
-    DatasetDescriptor descriptor = dataset.getDescriptor();
-    Schema schema = descriptor.getSchema();
-    PartitionStrategy strategy = null;
-    if (descriptor.isPartitioned()) {
-      strategy = descriptor.getPartitionStrategy();
-    }
-    SchemaUtil.checkTypeConsistency(schema, name, value);
-    try {
-      return (Comparable) DataModelUtil.roundTripFieldValue(
-          schema, strategy, type, name, value);
-    } catch (IOException ex) {
-      throw new DatasetException("IO error trying to round trip a field", ex);
-    }
   }
 }
