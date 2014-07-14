@@ -16,6 +16,7 @@
 package org.kitesdk.data.spi.filesystem;
 
 import com.google.common.collect.Lists;
+import org.apache.avro.util.Utf8;
 import org.kitesdk.data.Dataset;
 import org.kitesdk.data.DatasetDescriptor;
 import org.kitesdk.data.DatasetException;
@@ -518,6 +519,31 @@ public class TestFileSystemDataset extends MiniDFSTest {
     Assert.assertTrue(ds.deleteAll());
     
     checkReaderBehavior(ds.newReader(), 0, (RecordValidator<Record>) null);
+  }
+
+  @Test
+  @SuppressWarnings("deprecation")
+  public void testViewWithStringOrUtf8Value() throws IOException {
+    PartitionStrategy partitionStrategy = new PartitionStrategy.Builder().identity(
+        "username").build();
+
+    FileSystemDataset<Record> ds = new FileSystemDataset.Builder<Record>()
+        .name("partitioned-users")
+        .configuration(getConfiguration())
+        .descriptor(new DatasetDescriptor.Builder()
+            .schema(USER_SCHEMA)
+            .format(format)
+            .location(testDirectory)
+            .partitionStrategy(partitionStrategy)
+            .build())
+        .type(Record.class)
+        .build();
+
+    writeTestUsers(ds, 10);
+
+    Assert.assertEquals(1, datasetSize(ds.asRefinableView().with("username", "test-0")));
+
+    Assert.assertEquals(1, datasetSize(ds.asRefinableView().with("username", new Utf8("test-0"))));
   }
 
   @SuppressWarnings("deprecation")
