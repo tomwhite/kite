@@ -16,12 +16,14 @@
 package org.kitesdk.minicluster;
 
 import com.google.common.base.Preconditions;
+import com.google.common.io.Resources;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -52,7 +54,7 @@ public class FlumeService implements Service {
   private Configuration hadoopConf;
   private String workDir;
   private String bindIP = "127.0.0.1";
-  private File flumeConfiguration;
+  private String flumeConfiguration;
   private String agentName;
   private PropertiesFileConfigurationProvider configurationProvider;
   private Application flumeApplication;
@@ -70,7 +72,7 @@ public class FlumeService implements Service {
     if (serviceConfig.contains(MiniCluster.BIND_IP_KEY)) {
       bindIP = serviceConfig.get(MiniCluster.BIND_IP_KEY);
     }
-    this.flumeConfiguration = new File(serviceConfig.get(FLUME_CONFIGURATION));
+    this.flumeConfiguration = serviceConfig.get(FLUME_CONFIGURATION);
     this.agentName = serviceConfig.get(FLUME_AGENT_NAME);
     hadoopConf = serviceConfig.getHadoopConf(); // not used
   }
@@ -91,7 +93,7 @@ public class FlumeService implements Service {
     LOG.info("Flume Minicluster service started.");
   }
 
-  private File configureBindIp(File flumeConfiguration) throws IOException {
+  private File configureBindIp(String flumeConfiguration) throws IOException {
     Properties properties = readFromFile(flumeConfiguration);
     fixBindAddresses(properties, bindIP);
     File flumeWorkDir = new File(workDir, "flume");
@@ -101,10 +103,17 @@ public class FlumeService implements Service {
     return newFlumeConfiguration;
   }
 
-  private Properties readFromFile(File file) throws IOException {
+  private Properties readFromFile(String flumeConfiguration) throws IOException {
+
     BufferedReader reader = null;
     try {
-      reader = new BufferedReader(new FileReader(file));
+      File file = new File(flumeConfiguration);
+      if (file.exists()) {
+        reader = new BufferedReader(new FileReader(file));
+      } else {
+        reader = new BufferedReader(new InputStreamReader(
+            Resources.getResource(flumeConfiguration).openStream()));
+      }
       Properties properties = new Properties();
       properties.load(reader);
       return properties;
@@ -113,7 +122,7 @@ public class FlumeService implements Service {
         try {
           reader.close();
         } catch (IOException ex) {
-          LOG.warn("Unable to close file reader for file: " + file, ex);
+          LOG.warn("Unable to close reader for: " + flumeConfiguration, ex);
         }
       }
     }

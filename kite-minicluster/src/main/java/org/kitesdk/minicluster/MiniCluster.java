@@ -137,6 +137,11 @@ public class MiniCluster {
       return this;
     }
 
+    public Builder flumeConfiguration(String resource) {
+      serviceConfig.set(FLUME_CONFIGURATION, resource);
+      return this;
+    }
+
     public Builder flumeAgentName(String name) {
       serviceConfig.set(FLUME_AGENT_NAME, name);
       return this;
