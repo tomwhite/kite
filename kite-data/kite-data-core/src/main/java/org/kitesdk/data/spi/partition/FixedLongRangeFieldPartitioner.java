@@ -28,10 +28,10 @@ import org.kitesdk.data.spi.predicates.Predicates;
 import org.kitesdk.data.spi.predicates.Range;
 import org.kitesdk.data.spi.predicates.Ranges;
 
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(
-    value="SE_COMPARATOR_SHOULD_BE_SERIALIZABLE",
-    justification="Implement if we intend to use in Serializable objects "
-        + " (e.g., TreeMaps) and use java serialization.")
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value={
+        "NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE",
+        "SE_COMPARATOR_SHOULD_BE_SERIALIZABLE"},
+        justification="False positive due to generics.")
 @Immutable
 public class FixedLongRangeFieldPartitioner extends FieldPartitioner<Long, Long> {
 

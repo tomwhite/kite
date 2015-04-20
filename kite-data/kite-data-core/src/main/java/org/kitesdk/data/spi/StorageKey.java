@@ -102,6 +102,10 @@ public class StorageKey extends Marker implements Comparable<StorageKey> {
     return values.get(index);
   }
 
+  public List<Object> getValues() {
+    return values;
+  }
+
   /**
    * Replaces the value at {@code index} with the given {@code value}.
    *
