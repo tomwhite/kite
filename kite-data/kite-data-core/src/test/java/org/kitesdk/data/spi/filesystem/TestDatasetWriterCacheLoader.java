@@ -17,6 +17,7 @@ package org.kitesdk.data.spi.filesystem;
 
 import com.google.common.io.Files;
 import java.io.IOException;
+import java.util.Iterator;
 import junit.framework.Assert;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
@@ -103,6 +104,13 @@ public class TestDatasetWriterCacheLoader {
           getFileSytem().exists(partitionPath));
       } catch (IOException ex) {
         Assert.fail(ex.getMessage());
+      }
+    }
+
+    @Override
+    public void partitionsAdded(String namespace, String name, Iterable<String> partitions) {
+      for (String partition : partitions) {
+        partitionAdded(namespace, name, partition);
       }
     }
 

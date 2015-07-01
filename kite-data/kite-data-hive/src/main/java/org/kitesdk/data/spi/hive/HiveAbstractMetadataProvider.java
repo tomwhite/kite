@@ -234,6 +234,10 @@ abstract class HiveAbstractMetadataProvider extends AbstractMetadataProvider imp
     getMetaStoreUtil().addPartition(namespace, name, path);
   }
 
+  @Override
+  public void partitionsAdded(String namespace, String name, Iterable<String> paths) {
+    getMetaStoreUtil().addPartitions(namespace, name, paths);
+  }
 
   @Override
   @SuppressWarnings("unchecked")

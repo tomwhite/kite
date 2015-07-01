@@ -30,6 +30,7 @@ import org.apache.hadoop.hive.metastore.api.InvalidOperationException;
 import org.apache.hadoop.hive.metastore.api.MetaException;
 import org.apache.hadoop.hive.metastore.api.NoSuchObjectException;
 import org.apache.hadoop.hive.metastore.api.Partition;
+import org.apache.hadoop.hive.metastore.api.StorageDescriptor;
 import org.apache.hadoop.hive.metastore.api.Table;
 import org.apache.hadoop.hive.metastore.api.UnknownDBException;
 import org.apache.thrift.TException;
@@ -284,6 +285,43 @@ public class MetaStoreUtil {
     } catch (InvalidObjectException e) {
       throw new DatasetOperationException(
           "Invalid partition for " + dbName + "." + tableName + ": " + path, e);
+    } catch (MetaException e) {
+      throw new DatasetOperationException("Hive MetaStore exception", e);
+    } catch (TException e) {
+      throw new DatasetOperationException(
+          "Exception communicating with the Hive MetaStore", e);
+    }
+  }
+
+  public void addPartitions(final String dbName, final String tableName,
+      final Iterable<String> paths) {
+    ClientAction<Void> addPartition =
+        new ClientAction<Void>() {
+          @Override
+          public Void call() throws TException {
+            // TODO: future enhancement: split into batches
+            List<Partition> partitions = Lists.newArrayList();
+            for (String path : paths) {
+              Partition partition = new Partition();
+              partition.setDbName(dbName);
+              partition.setTableName(tableName);
+              //partition.setSd(); // TODO: get from table, may have to set subfields too
+              //partition.setValues(); // TODO: get from path, must be in same order as
+              // table declaration
+              partitions.add(partition);
+            }
+            client.add_partitions(partitions, true, false);
+            return null;
+          }
+        };
+
+    try {
+      doWithRetry(addPartition);
+    } catch (AlreadyExistsException e) {
+      // this is okay
+    } catch (InvalidObjectException e) {
+      throw new DatasetOperationException(
+          "Invalid partitions for " + dbName + "." + tableName + ": " + paths, e);
     } catch (MetaException e) {
       throw new DatasetOperationException("Hive MetaStore exception", e);
     } catch (TException e) {

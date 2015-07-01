@@ -15,6 +15,8 @@
  */
 package org.kitesdk.data.spi.filesystem;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import java.util.Iterator;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
@@ -360,11 +362,14 @@ public class FileSystemDataset<E> extends AbstractDataset<E> implements
 
   public void addExistingPartitions() {
     if (partitionListener != null && descriptor.isPartitioned()) {
-      for (Iterator<Path> i = dirIterator(); i.hasNext(); ) {
-        Path partition = i.next();
-        LOG.info("Adding partition {}", partition);
-        partitionListener.partitionAdded(namespace, name, partition.toString());
-      }
+      partitionListener.partitionsAdded(namespace, name, Iterables.transform(
+          ImmutableList.copyOf(dirIterator()),
+          new Function<Path, String>() {
+        @Override
+        public String apply(@Nullable Path path) {
+          return path.toString();
+        }
+      }));
     }
   }
 

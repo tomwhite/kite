@@ -15,12 +15,15 @@
  */
 package org.kitesdk.data.spi;
 
+import java.util.Iterator;
+
 /**
  * Callback interface for metadata providers to listen for a new partition being added
  * so they can act on it (e.g. by registering the new partition in their metadata store).
  */
 public interface PartitionListener {
   void partitionAdded(String namespace, String name, String partition);
+  void partitionsAdded(String namespace, String name, Iterable<String> partitions);
 
   void partitionDeleted(String namespace, String name, String partition);
 }
